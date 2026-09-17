@@ -9,14 +9,21 @@ from flask import (
     flash
 )
 
+import os
 import sqlite3
 
+from dotenv import load_dotenv
 from werkzeug.security import check_password_hash
 
 
+load_dotenv()
+
 app = Flask(__name__)
 
-app.secret_key = "development-secret-key"
+app.secret_key = os.environ.get(
+    "SECRET_KEY",
+    "development-secret-key"
+)
 
 
 def get_db_connection():
