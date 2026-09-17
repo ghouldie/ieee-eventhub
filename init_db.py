@@ -13,29 +13,36 @@ CREATE TABLE IF NOT EXISTS events (
 )
 """)
 
-connection.execute("""
-INSERT INTO events (title, description, date, location, status)
-VALUES (?, ?, ?, ?, ?)
-""", (
-    "IEEE Technology Seminar",
-    "A seminar discussing current developments in technology and engineering.",
-    "2026-10-15",
-    "Institut Teknologi Bandung",
-    "Upcoming"
-))
+event_count = connection.execute(
+    "SELECT COUNT(*) FROM events"
+).fetchone()[0]
 
-connection.execute("""
-INSERT INTO events (title, description, date, location, status)
-VALUES (?, ?, ?, ?, ?)
-""", (
-    "IEEE Coding Workshop",
-    "A beginner-friendly workshop focused on programming fundamentals.",
-    "2026-11-02",
-    "ITB Jatinangor",
-    "Upcoming"
-))
+if event_count == 0:
+    connection.execute("""
+    INSERT INTO events
+    (title, description, date, location, status)
+    VALUES (?, ?, ?, ?, ?)
+    """, (
+        "IEEE Technology Seminar",
+        "A seminar discussing current developments in technology and engineering.",
+        "2026-10-15",
+        "Institut Teknologi Bandung",
+        "Upcoming"
+    ))
+
+    connection.execute("""
+    INSERT INTO events
+    (title, description, date, location, status)
+    VALUES (?, ?, ?, ?, ?)
+    """, (
+        "IEEE Coding Workshop",
+        "A beginner-friendly workshop focused on programming fundamentals.",
+        "2026-11-02",
+        "ITB Jatinangor",
+        "Upcoming"
+    ))
 
 connection.commit()
 connection.close()
 
-print("Database berhasil dibuat!")
+print("Database successfully initialized!")
